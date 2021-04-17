@@ -1,0 +1,44 @@
+html, body {
+	margin: 0;
+	padding: 0;
+}
+
+/* MAIN */
+form {
+	width: 100%;
+	border: none;
+	border-bottom: 1px solid #000;
+	background: #ddd;
+	display: flex;
+	align-items: center;
+}
+
+form * {
+	margin: 0;
+	padding: 0;
+}
+
+form fieldset {
+	border: none;
+	padding: 10px;
+}
+
+form fieldset input, form fieldset button {
+	cursor: pointer;
+	padding: 5px 6px;
+}
+
+#cards_wrapper {
+	padding: 20px 60px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+#cards_wrapper .card {
+	margin: 20px;
+	padding: 10px;
+	border: 1px solid #000;
+	cursor: pointer;
+}

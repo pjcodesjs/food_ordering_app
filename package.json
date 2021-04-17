@@ -1,0 +1,24 @@
+{
+  "name": "food_ordering_app",
+  "version": "1.0.0",
+  "description": "Food ordering app UI with features such as sorting, filtering, search and more",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pjcodesjs/food_ordering_app.git"
+  },
+  "author": "PJ Codes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pjcodesjs/food_ordering_app/issues"
+  },
+  "homepage": "https://github.com/pjcodesjs/food_ordering_app#readme",
+  "dependencies": {
+    "cors-anywhere": "^0.4.4",
+    "live-server": "^1.2.1",
+    "npm": "^7.10.0"
+  }
+}
