@@ -13,6 +13,7 @@ window.onload = () => {
 			fuzzy_search();			
 			sort_restaurants();
 			filter_by_type();
+			mark_favorite();
 		})
 	}
 
@@ -20,7 +21,7 @@ window.onload = () => {
 	const generate_view = (data) => {
 		// HIDE ALL THE CARDS INITIALLY
 		const cards_wrapper = [].slice.call(document.getElementById('cards_wrapper').children);
-		cards_wrapper.forEach(el => el.style.display = 'none');
+		cards_wrapper.forEach(el => el.style.display = 'none');		
 
 		// CLEAR OUR FILTERTED RESULTS
 		filtered_results = [];
@@ -29,44 +30,48 @@ window.onload = () => {
 		data.forEach((el, idx) => {
 			// IF JSON
 			if (el.id) {
-				create_card(el);
+				create_card(el, idx);
 			}
 
 			// IF HTML ELEMENTS
 			else {
 				document.getElementById('cards_wrapper').append(el);
-				el.style.display = 'initial';
+				el.style.display = 'initial';				
 			}
 		});
 
 	}
 
 	// CREATES THE HTML FOR EACH INDIVIDUAL CARD
-	const create_card = (rest) => {
+	const create_card = (rest, num) => {
 		// CREATE CARD ELELEMNTS
 		const card = document.createElement('ASIDE');
 		const rest_name = document.createElement('P');
 		const rest_add = document.createElement('P');
 		const rest_type = document.createElement('P');
-		const rest_rev_count = document.createElement('P');		
+		const rest_rev_count = document.createElement('P');
+		const rest_fav = document.createElement('BUTTON');
 
 		// CREATE DATA
 		rest_name.append(rest.name);
 		rest_add.append(rest.address);
 		rest_type.append(rest.cuisine_type);
 		rest_rev_count.append(rest.reviews.length);
+		rest_fav.append('Mark Favorite');
 
 		// APPEND TEXT NODE TO CARD
 		card.append(rest_name);
 		card.append(rest_add);
 		card.append('Number of reviews: ', rest_rev_count);
 		card.append(rest_type);
+		card.append(rest_fav);
 
 		// APPEND CARD TO DOM
 		card.classList.add('card');
 		card.setAttribute('data-type', rest.cuisine_type); // ADD DATA ATTRIBUTE
-		card.setAttribute('data-name', rest.name); // ADD DATA ATTRIBUTE
-		cards_wrapper.append(card);
+		card.setAttribute('data-name', rest.name); // ADD DATA ATTRIBUTE		
+		card.setAttribute('data-id', num++); // INDIVIDUAL CARD ID
+		cards_wrapper.append(card);	
 	}
 
 	// FUZZY SEARCH FOR RESTAURANTS
@@ -132,6 +137,40 @@ window.onload = () => {
 
 	}
 
+	// MARK FAVORITE
+	const mark_favorite = () => {
+		let fav_btn = document.querySelectorAll('aside.card button');
+		fav_btn.forEach(el => {
+			el.addEventListener('click', function(event) {
+				event.preventDefault();								
+				
+				const rest_id = JSON.stringify(this.parentNode.dataset.id);		
+
+				// IF REST ID DOESNT EXIST, SET TO TRUE
+				if (!localStorage.getItem(rest_id)) {
+					localStorage.setItem(rest_id, true);
+					this.innerHTML = 'Unmark Favorite';
+					console.log(localStorage);								
+				}				
+				// IF REST ID DOES EXIST INSIDE LOCAL STORAGE, CHECK BOOLEAN
+				else {
+					Object.keys(localStorage).forEach((el) => {					
+						if (rest_id.localeCompare(el) == 0 && localStorage.getItem(rest_id) === 'true') {
+							localStorage.setItem(rest_id, false);
+							this.innerHTML = 'Mark Favorite';
+							console.log(localStorage);
+						}
+						else if (rest_id.localeCompare(el) == 0 && localStorage.getItem(rest_id) === 'false') {
+							localStorage.setItem(rest_id, true);
+							this.innerHTML = 'Unmark Favorite';
+							console.log(localStorage);
+						}
+					});					
+				}
+			});
+		});
+		// localStorage.clear();
+	}
 
 	get_data();
 }
